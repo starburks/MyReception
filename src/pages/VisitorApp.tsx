@@ -165,53 +165,59 @@ function VisitorApp() {
   };
 
   const renderHome = () => (
-    <div className="relative min-h-screen flex items-center justify-center text-center animate-fade-in 
-                    bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300">
-      {/* 画面全体の背景グラデーション */}
-  
-      <div className="relative z-10 p-8 sm:p-12 bg-white/60 backdrop-blur-md shadow-2xl rounded-3xl glass-effect 
-                      max-w-xl w-full mx-4 sm:mx-auto">
-        {/* 半透明の白背景にぼかしを加えて“ガラス”感を演出 */}
-  
-        <div className="mb-10 sm:mb-12">
+    <div className="relative text-center animate-fade-in">
+      {/* 背景グラデーションやガラス風デザインは必要に応じて調整 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 rounded-3xl opacity-90 -z-10" />
+      
+      {/* カード全体を中央に配置し、横幅を制限 */}
+      <div className="relative z-10 max-w-xl w-full mx-auto py-8 sm:py-16 px-4 sm:px-8 backdrop-blur-sm rounded-3xl glass-effect">
+        
+        <div className="mb-12 flex flex-col items-center">
           <img
             src="/logo.png"
             alt="Company Logo"
-            className="mx-auto w-56 sm:w-64"
+            className="w-48 sm:w-56 h-auto max-w-full object-contain"
+            /* 
+               - w-48やw-56など、画面幅に合わせて大きさを変える
+               - 縦長ロゴでも横幅を一定に抑えることで見た目の崩れを防止
+               - object-containでアスペクト比を崩さずに表示
+            */
           />
-          {/* ロゴを中央配置し、画面に対してやや大きめに */}
         </div>
   
-        <button
-          onClick={() => setStep('appointment')}
-          onMouseEnter={() => setIsButtonHovered(true)}
-          onMouseLeave={() => setIsButtonHovered(false)}
-          className={`
-            relative
-            bg-gradient-to-r from-orange-600 to-[#1a2f59] 
-            text-white font-bold
-            py-6 sm:py-8 px-12 sm:px-20
-            rounded-2xl
-            text-2xl sm:text-3xl
-            transition-all duration-500 transform hover-lift ripple
-            ${isButtonHovered ? 'scale-105 shadow-2xl shadow-orange-300/50' : 'shadow-lg shadow-orange-300/30'}
-          `}
-        >
-          <span
-            className={`transition-transform duration-300 inline-block
-              ${isButtonHovered ? 'scale-105' : ''}
+        <div>
+          <button
+            onClick={() => setStep('appointment')}
+            onMouseEnter={() => setIsButtonHovered(true)}
+            onMouseLeave={() => setIsButtonHovered(false)}
+            className={`
+              relative
+              bg-white
+              text-gray-800 font-bold
+              py-5 sm:py-6 px-10 sm:px-16
+              rounded-2xl
+              text-xl sm:text-2xl
+              transition-all duration-500 transform hover-lift ripple
+              ${isButtonHovered ? 'scale-105 shadow-2xl shadow-gray-300' : 'shadow-lg shadow-gray-200'}
             `}
           >
-            受付開始
-          </span>
-  
-          {isButtonHovered && (
-            <div className="absolute inset-0 bg-white/20 rounded-2xl -z-10 animate-pulse-slow" />
-          )}
-        </button>
+            <span
+              className={`
+                transition-transform duration-300 inline-block
+                ${isButtonHovered ? 'scale-105' : ''}
+              `}
+            >
+              受付開始
+            </span>
+            {isButtonHovered && (
+              <div className="absolute inset-0 bg-gray-100/20 rounded-2xl -z-10 animate-pulse-slow" />
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
+  
   
   const renderAppointmentSelection = () => (
     <div className="w-full max-w-2xl mx-auto animate-slide-in">
