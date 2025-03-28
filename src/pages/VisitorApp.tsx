@@ -176,19 +176,21 @@ function VisitorApp() {
           />
         </div>
         <div>
-          <h1 className="text-4xl sm:text-7xl font-black mb-8 sm:mb-12 text-gray-900 transform transition-all duration-700 hover:scale-110 animate-float bg-clip-text">
-            ようこそ！
-          </h1>
           <button
             onClick={() => setStep('appointment')}
             onMouseEnter={() => setIsButtonHovered(true)}
             onMouseLeave={() => setIsButtonHovered(false)}
             className={`
-              relative bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold 
-              py-6 sm:py-8 px-12 sm:px-20 rounded-2xl text-2xl sm:text-3xl
+              relative
+              bg-gradient-to-r from-orange-500 to-orange-600
+              text-white font-bold
+              py-6 sm:py-8 px-12 sm:px-20
+              rounded-2xl
+              text-2xl sm:text-3xl
               transition-all duration-500 transform hover-lift ripple
-              ${isButtonHovered ? 'scale-105 shadow-2xl' : 'shadow-lg'}
+              ${isButtonHovered ? 'scale-105 shadow-2xl shadow-orange-300/70' : 'shadow-lg shadow-orange-200/50'}
             `}
+            
           >
             <span className={`transition-transform duration-300 inline-block
               ${isButtonHovered ? 'scale-105' : ''}`}>
