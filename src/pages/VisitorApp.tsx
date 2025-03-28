@@ -186,21 +186,21 @@ function VisitorApp() {
         </div>
   
         <div>
-          <button
-            onClick={() => setStep('appointment')}
-            onMouseEnter={() => setIsButtonHovered(true)}
-            onMouseLeave={() => setIsButtonHovered(false)}
-            className={`
-              relative
-              bg-gradient-to-r from-orange-600 to-[#1a2f59] 
-              text-white font-bold
-              py-6 sm:py-8 px-12 sm:px-20
-              rounded-2xl
-              text-2xl sm:text-3xl
-              transition-all duration-500 transform hover-lift ripple
-              ${isButtonHovered ? 'scale-105 shadow-2xl shadow-orange-300/50' : 'shadow-lg shadow-orange-300/30'}
-            `}
-          >
+        <button
+          onClick={() => setStep('appointment')}
+          onMouseEnter={() => setIsButtonHovered(true)}
+          onMouseLeave={() => setIsButtonHovered(false)}
+          className={`
+            relative
+            bg-gradient-to-r from-orange-600 to-[#1a2f59] 
+            text-white font-bold
+            py-6 sm:py-8 px-12 sm:px-20
+            rounded-2xl
+            text-2xl sm:text-3xl
+            transition-all duration-500 transform hover-lift ripple
+            ${isButtonHovered ? 'scale-105 shadow-2xl shadow-orange-300/50' : 'shadow-lg shadow-orange-300/30'}
+          `}
+        >
             <span
               className={`
                 transition-transform duration-300 inline-block
@@ -218,38 +218,49 @@ function VisitorApp() {
     </div>
   );
   
-  
   const renderAppointmentSelection = () => (
     <div className="w-full max-w-2xl mx-auto animate-slide-in">
       {renderBackButton(() => setStep('home'))}
       <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-xl glass-effect">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-[#04243d] text-center">ご予約の確認</h2>
+        {/* text-gray-800 → text-[#04243d] */}
+        <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-[#04243d] text-center">
+          ご予約の確認
+        </h2>
         <div className="grid grid-cols-1 gap-6 sm:gap-8">
           <button
             onClick={() => {
               setAppointmentType('appointment');
               setStep('form');
             }}
-            className="w-full p-6 sm:p-8 text-center border-2 rounded-xl hover:border-[#ea5519] hover:bg-[#ea5519]
+            className={`
+              w-full p-6 sm:p-8 text-center border-2 rounded-xl
+              hover:border-[#ea5519] hover:bg-[#ea5519]/20
               transition-all duration-500 transform hover-lift ripple
-              flex flex-col items-center group animate-scale-in"
+              flex flex-col items-center group animate-scale-in
+            `}
           >
-            <Calendar className="w-16 h-16 sm:w-20 sm:h-20 text-gray-600 group-hover:text-[#ea5519] transition-colors duration-300 mb-4" />
+            {/* text-gray-600 → text-[#04243d], group-hover:text-blue-600 → group-hover:text-[#ea5519] */}
+            <Calendar className="w-16 h-16 sm:w-20 sm:h-20 text-[#04243d] group-hover:text-[#ea5519] transition-colors duration-300 mb-4" />
+            {/* group-hover:text-blue-700 → group-hover:text-[#ea5519] */}
             <span className="text-2xl sm:text-3xl font-medium group-hover:text-[#ea5519] transition-colors duration-300">
               ご予約のあるお客様
             </span>
           </button>
+  
           <button
             onClick={() => {
               setAppointmentType('walkin');
               setStep('form');
             }}
-            className="w-full p-6 sm:p-8 text-center border-2 rounded-xl hover:border-blue-500 hover:bg-blue-50/50
+            className={`
+              w-full p-6 sm:p-8 text-center border-2 rounded-xl
+              hover:border-[#ea5519] hover:bg-[#ea5519]/20
               transition-all duration-500 transform hover-lift ripple
-              flex flex-col items-center group animate-scale-in"
+              flex flex-col items-center group animate-scale-in
+            `}
           >
-            <UserPlus className="w-16 h-16 sm:w-20 sm:h-20 text-gray-600 group-hover:text-blue-600 transition-colors duration-300 mb-4" />
-            <span className="text-2xl sm:text-3xl font-medium group-hover:text-blue-700 transition-colors duration-300">
+            <UserPlus className="w-16 h-16 sm:w-20 sm:h-20 text-[#04243d] group-hover:text-[#ea5519] transition-colors duration-300 mb-4" />
+            <span className="text-2xl sm:text-3xl font-medium group-hover:text-[#ea5519] transition-colors duration-300">
               ご予約のないお客様
             </span>
           </button>
@@ -257,48 +268,63 @@ function VisitorApp() {
       </div>
     </div>
   );
-
+  
+  // backButton
   const renderBackButton = (onBack: () => void) => (
     <button
       onClick={onBack}
-      className="mb-4 sm:mb-6 flex items-center text-gray-600 hover:text-[#04243d] text-lg sm:text-xl transition-all duration-300 
-        hover-lift group ripple px-3 sm:px-4 py-2 rounded-lg"
+      className="
+        mb-4 sm:mb-6 flex items-center text-[#04243d]
+        hover:text-[#ea5519] text-lg sm:text-xl
+        transition-all duration-300 hover-lift group ripple 
+        px-3 sm:px-4 py-2 rounded-lg
+      "
     >
       <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 mr-2 transition-transform duration-300 group-hover:-translate-x-2" />
       戻る
     </button>
   );
-
+  
   const renderForm = () => (
     <div className="w-full max-w-2xl mx-auto animate-slide-in">
       {renderBackButton(() => setStep('appointment'))}
       <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl glass-effect">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-[#04243d]">来訪者情報</h2>
+        {/* text-gray-800 → text-[#04243d] */}
+        <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-[#04243d]">
+          来訪者情報
+        </h2>
+  
         <div className="space-y-6 sm:space-y-8">
           <div className="animate-scale-in" style={{ animationDelay: '0.1s' }}>
-            <label className="block text-gray-700 text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
+            <label className="block text-[#04243d] text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
               お名前 <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={visitorInfo.name}
               onChange={(e) => setVisitorInfo({ ...visitorInfo, name: e.target.value })}
-              className="w-full p-4 sm:p-5 text-lg sm:text-xl border-2 rounded-xl input-focus-ring
-                transition-all duration-300 hover:border-blue-400 focus:border-blue-500"
+              className="
+                w-full p-4 sm:p-5 text-lg sm:text-xl border-2 rounded-xl 
+                input-focus-ring transition-all duration-300 
+                hover:border-[#ea5519] focus:border-blue-500
+              "
               placeholder="山田 太郎"
               required
             />
           </div>
           <div className="animate-scale-in" style={{ animationDelay: '0.2s' }}>
-            <label className="block text-gray-700 text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
+            <label className="block text-[#04243d] text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
               会社名 <span className="text-gray-400">(任意)</span>
             </label>
             <input
               type="text"
               value={visitorInfo.company}
               onChange={(e) => setVisitorInfo({ ...visitorInfo, company: e.target.value })}
-              className="w-full p-4 sm:p-5 text-lg sm:text-xl border-2 rounded-xl input-focus-ring
-                transition-all duration-300 hover:border-blue-400 focus:border-blue-500"
+              className="
+                w-full p-4 sm:p-5 text-lg sm:text-xl border-2 rounded-xl
+                input-focus-ring transition-all duration-300
+                hover:border-[#ea5519] focus:border-blue-500
+              "
               placeholder="株式会社D"
             />
           </div>
@@ -313,10 +339,13 @@ function VisitorApp() {
               }
             }}
             disabled={!visitorInfo.name}
-            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 sm:py-5 px-6 sm:px-8 
-              rounded-xl text-xl sm:text-2xl font-bold hover:from-blue-600 hover:to-blue-700 
+            className="
+              w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white
+              py-4 sm:py-5 px-6 sm:px-8 rounded-xl text-xl sm:text-2xl font-bold
+              hover:from-[#ea5519] hover:to-[#ea5519]
               disabled:from-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed
-              transition-all duration-500 transform hover-lift ripple animate-scale-in"
+              transition-all duration-500 transform hover-lift ripple animate-scale-in
+            "
             style={{ animationDelay: '0.3s' }}
           >
             次へ
@@ -325,12 +354,16 @@ function VisitorApp() {
       </div>
     </div>
   );
-
+  
   const renderCompanySelection = () => (
     <div className="w-full max-w-2xl mx-auto animate-slide-in">
       {renderBackButton(() => setStep('form'))}
       <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-xl glass-effect">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-[#04243d]">アポイント先選択</h2>
+        {/* text-gray-800 → text-[#04243d] */}
+        <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-[#04243d]">
+          アポイント先選択
+        </h2>
+  
         <div className="grid grid-cols-1 gap-4 sm:gap-6">
           {isCompanyLoading ? (
             <div className="text-center text-gray-500 py-6 sm:py-8 text-lg sm:text-xl">
@@ -348,15 +381,26 @@ function VisitorApp() {
                   setSelectedCompany(company.id);
                   setStep('staff');
                 }}
-                className="w-full p-4 sm:p-6 text-left border-2 rounded-xl hover:border-blue-500 hover:bg-blue-50/50
+                className={`
+                  w-full p-4 sm:p-6 text-left border-2 rounded-xl
+                  hover:border-[#ea5519] hover:bg-[#ea5519]/20
                   transition-all duration-500 transform hover-lift ripple
-                  flex items-center group animate-scale-in"
+                  flex items-center group animate-scale-in
+                `}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="bg-gray-100 rounded-full p-2 sm:p-3 group-hover:bg-blue-100 transition-colors duration-300">
-                  <Building2 className="w-8 h-8 sm:w-12 sm:h-12 text-gray-600 group-hover:text-blue-600 transition-colors duration-300" />
+                <div
+                  className="
+                    bg-gray-100 rounded-full p-2 sm:p-3 
+                    group-hover:bg-[#ea5519]/20
+                    transition-colors duration-300
+                  "
+                >
+                  {/* text-gray-600 → text-[#04243d], group-hover:text-blue-600 → group-hover:text-[#ea5519] */}
+                  <Building2 className="w-8 h-8 sm:w-12 sm:h-12 text-[#04243d] group-hover:text-[#ea5519] transition-colors duration-300" />
                 </div>
-                <span className="text-xl sm:text-2xl font-medium ml-4 sm:ml-6 group-hover:text-blue-700 transition-colors duration-300">
+                {/* group-hover:text-blue-700 → group-hover:text-[#ea5519] */}
+                <span className="text-xl sm:text-2xl font-medium ml-4 sm:ml-6 group-hover:text-[#ea5519] transition-colors duration-300">
                   {company.name}
                 </span>
               </button>
@@ -366,12 +410,16 @@ function VisitorApp() {
       </div>
     </div>
   );
-
+  
   const renderStaffSelection = () => (
     <div className="w-full max-w-2xl mx-auto animate-slide-in">
       {renderBackButton(() => setStep('company'))}
       <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-xl glass-effect">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-[#04243d]">担当者選択</h2>
+        {/* text-gray-800 → text-[#04243d] */}
+        <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-[#04243d]">
+          担当者選択
+        </h2>
+  
         <div className="grid grid-cols-1 gap-4 sm:gap-6">
           {isLoading ? (
             <div className="text-center text-gray-500 py-6 sm:py-8 text-lg sm:text-xl">
@@ -387,12 +435,22 @@ function VisitorApp() {
                 key={staff.id}
                 onClick={() => handleStaffSelect(staff.id)}
                 disabled={isLoading}
-                className="w-full p-4 sm:p-6 text-left border-2 rounded-xl hover:border-blue-500 hover:bg-blue-50/50
+                className={`
+                  w-full p-4 sm:p-6 text-left border-2 rounded-xl
+                  hover:border-[#ea5519] hover:bg-[#ea5519]/20
                   transition-all duration-500 transform hover-lift ripple
-                  flex items-center group animate-scale-in disabled:opacity-50 disabled:cursor-not-allowed"
+                  flex items-center group animate-scale-in
+                  disabled:opacity-50 disabled:cursor-not-allowed
+                `}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="bg-gray-100 rounded-full p-2 sm:p-3 group-hover:bg-blue-100 transition-colors duration-300">
+                <div
+                  className="
+                    bg-gray-100 rounded-full p-2 sm:p-3 
+                    group-hover:bg-[#ea5519]/20
+                    transition-colors duration-300
+                  "
+                >
                   {staff.photo_url ? (
                     <img
                       src={staff.photo_url}
@@ -400,15 +458,18 @@ function VisitorApp() {
                       className="w-8 h-8 sm:w-12 sm:h-12 rounded-full object-cover"
                     />
                   ) : (
-                    <UserCircle className="w-8 h-8 sm:w-12 sm:h-12 text-gray-600 group-hover:text-blue-600 transition-colors duration-300" />
+                    /* text-gray-600 → text-[#04243d], group-hover:text-blue-600 → group-hover:text-[#ea5519] */
+                    <UserCircle className="w-8 h-8 sm:w-12 sm:h-12 text-[#04243d] group-hover:text-[#ea5519] transition-colors duration-300" />
                   )}
                 </div>
                 <div className="ml-4 sm:ml-6">
-                  <div className="text-xl sm:text-2xl font-medium group-hover:text-blue-700 transition-colors duration-300">
+                  {/* group-hover:text-blue-700 → group-hover:text-[#ea5519] */}
+                  <div className="text-xl sm:text-2xl font-medium group-hover:text-[#ea5519] transition-colors duration-300">
                     {staff.name}
                   </div>
                   {staff.department && (
-                    <div className="text-sm sm:text-base text-gray-500 group-hover:text-blue-600 transition-colors duration-300">
+                    /* group-hover:text-blue-600 → group-hover:text-[#ea5519] */
+                    <div className="text-sm sm:text-base text-gray-500 group-hover:text-[#ea5519] transition-colors duration-300">
                       {staff.department}
                     </div>
                   )}
@@ -420,13 +481,14 @@ function VisitorApp() {
       </div>
     </div>
   );
-
+  
   const renderComplete = () => (
     <div className="w-full max-w-2xl mx-auto animate-slide-in">
       <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-xl text-center glass-effect">
         <div className="mb-8">
           <Coffee className="w-16 h-16 sm:w-24 sm:h-24 mx-auto text-green-500 animate-float" />
         </div>
+        {/* text-gray-800 → text-[#04243d] */}
         <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-[#04243d]">
           受付完了
         </h2>
@@ -439,7 +501,7 @@ function VisitorApp() {
       </div>
     </div>
   );
-
+  
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-8">
       {step === 'home' && renderHome()}
@@ -449,7 +511,7 @@ function VisitorApp() {
       {step === 'staff' && renderStaffSelection()}
       {step === 'complete' && renderComplete()}
     </div>
-  );
+  );  
 }
 
 export default VisitorApp;
