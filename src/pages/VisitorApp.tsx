@@ -165,37 +165,36 @@ function VisitorApp() {
   };
 
   const renderHome = () => (
-    <div className="min-h-screen w-full 
-                    bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300
-                    flex items-center justify-center font-merriweather">
+    <div className="relative min-h-screen flex items-center justify-center text-center animate-fade-in 
+                    bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300">
+      {/* 画面全体の背景グラデーション */}
   
-      <div className="max-w-5xl w-full mx-auto p-6 sm:p-12 
-                      bg-white/60 backdrop-blur-md shadow-2xl rounded-3xl 
-                      text-center glass-effect">
+      <div className="relative z-10 p-8 sm:p-12 bg-white/60 backdrop-blur-md shadow-2xl rounded-3xl glass-effect 
+                      max-w-xl w-full mx-4 sm:mx-auto">
+        {/* 半透明の白背景にぼかしを加えて“ガラス”感を演出 */}
   
-        {/* ロゴ部分 */}
         <div className="mb-10 sm:mb-12">
           <img
             src="/logo.png"
             alt="Company Logo"
             className="mx-auto w-56 sm:w-64"
           />
+          {/* ロゴを中央配置し、画面に対してやや大きめに */}
         </div>
   
-        {/* ボタン */}
         <button
           onClick={() => setStep('appointment')}
           onMouseEnter={() => setIsButtonHovered(true)}
           onMouseLeave={() => setIsButtonHovered(false)}
           className={`
             relative
-            bg-gradient-to-r from-[#d38942] to-[#1a2f59]
+            bg-gradient-to-r from-orange-600 to-[#1a2f59] 
             text-white font-bold
             py-6 sm:py-8 px-12 sm:px-20
             rounded-2xl
             text-2xl sm:text-3xl
             transition-all duration-500 transform hover-lift ripple
-            ${isButtonHovered ? 'scale-105 shadow-2xl shadow-orange-300/70' : 'shadow-lg shadow-orange-200/50'}
+            ${isButtonHovered ? 'scale-105 shadow-2xl shadow-orange-300/50' : 'shadow-lg shadow-orange-300/30'}
           `}
         >
           <span
@@ -213,7 +212,6 @@ function VisitorApp() {
       </div>
     </div>
   );
-  
   
 
   const renderAppointmentSelection = () => (
