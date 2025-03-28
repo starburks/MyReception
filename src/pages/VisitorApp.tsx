@@ -164,47 +164,56 @@ function VisitorApp() {
     }
   };
 
-const renderHome = () => (
-  <div className="relative text-center animate-fade-in">
-    {/* 背景部分はお好みで調整 */}
-    <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 rounded-3xl opacity-90 -z-10" />
-    <div className="relative z-10 py-8 sm:py-16 px-4 sm:px-8 backdrop-blur-sm rounded-3xl glass-effect">
-      <div className="mb-12">
-        <img
-          src="/logo.png"
-          alt="Company Logo"
-          className="w-48 sm:w-64 mx-auto"
-        />
-      </div>
-      <div>
+  const renderHome = () => (
+    <div className="min-h-screen w-full 
+                    bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300
+                    flex items-center justify-center font-merriweather">
+  
+      <div className="max-w-5xl w-full mx-auto p-6 sm:p-12 
+                      bg-white/60 backdrop-blur-md shadow-2xl rounded-3xl 
+                      text-center glass-effect">
+  
+        {/* ロゴ部分 */}
+        <div className="mb-10 sm:mb-12">
+          <img
+            src="/logo.png"
+            alt="Company Logo"
+            className="mx-auto w-56 sm:w-64"
+          />
+        </div>
+  
+        {/* ボタン */}
         <button
           onClick={() => setStep('appointment')}
           onMouseEnter={() => setIsButtonHovered(true)}
           onMouseLeave={() => setIsButtonHovered(false)}
           className={`
             relative
-            bg-white
-            text-gray-800 font-bold
+            bg-gradient-to-r from-[#d38942] to-[#1a2f59]
+            text-white font-bold
             py-6 sm:py-8 px-12 sm:px-20
             rounded-2xl
             text-2xl sm:text-3xl
             transition-all duration-500 transform hover-lift ripple
-            ${isButtonHovered ? 'scale-105 shadow-2xl shadow-gray-300' : 'shadow-lg shadow-gray-200'}
+            ${isButtonHovered ? 'scale-105 shadow-2xl shadow-orange-300/70' : 'shadow-lg shadow-orange-200/50'}
           `}
         >
-          <span className={transition-transform duration-300 inline-block
-              ${isButtonHovered ? 'scale-105' : ''}}>
-              受付開始
-            </span>
-            {isButtonHovered && (
-              <div className="absolute inset-0 bg-white/20 rounded-2xl -z-10 animate-pulse-slow" />
+          <span
+            className={`transition-transform duration-300 inline-block
+              ${isButtonHovered ? 'scale-105' : ''}
+            `}
+          >
+            受付開始
+          </span>
+  
+          {isButtonHovered && (
+            <div className="absolute inset-0 bg-white/20 rounded-2xl -z-10 animate-pulse-slow" />
           )}
         </button>
       </div>
     </div>
-  </div>
-);
-
+  );
+  
   
 
   const renderAppointmentSelection = () => (
