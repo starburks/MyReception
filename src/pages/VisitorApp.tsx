@@ -192,13 +192,13 @@ function VisitorApp() {
             onMouseLeave={() => setIsButtonHovered(false)}
             className={`
               relative
-              bg-white
-              text-gray-800 font-bold
-              py-5 sm:py-6 px-10 sm:px-16
+              bg-gradient-to-r from-orange-600 to-[#1a2f59] 
+              text-white font-bold
+              py-6 sm:py-8 px-12 sm:px-20
               rounded-2xl
-              text-xl sm:text-2xl
+              text-2xl sm:text-3xl
               transition-all duration-500 transform hover-lift ripple
-              ${isButtonHovered ? 'scale-105 shadow-2xl shadow-gray-300' : 'shadow-lg shadow-gray-200'}
+              ${isButtonHovered ? 'scale-105 shadow-2xl shadow-orange-300/50' : 'shadow-lg shadow-orange-300/30'}
             `}
           >
             <span
