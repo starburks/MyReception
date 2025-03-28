@@ -213,7 +213,6 @@ function VisitorApp() {
     </div>
   );
   
-
   const renderAppointmentSelection = () => (
     <div className="w-full max-w-2xl mx-auto animate-slide-in">
       {renderBackButton(() => setStep('home'))}
