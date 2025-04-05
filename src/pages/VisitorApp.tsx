@@ -306,7 +306,7 @@ function VisitorApp() {
               className="
                 w-full p-4 sm:p-5 text-lg sm:text-xl border-2 rounded-xl 
                 input-focus-ring transition-all duration-300 
-                hover:border-[#ea5519] focus:border-[#04243d]
+                hover:border-[#04243d] focus:border-[#04243d]
               "
               placeholder="山田 太郎"
               required
@@ -323,9 +323,9 @@ function VisitorApp() {
               className="
                 w-full p-4 sm:p-5 text-lg sm:text-xl border-2 rounded-xl
                 input-focus-ring transition-all duration-300
-                hover:border-[#ea5519] focus:border-[#04243d]
+                hover:border-[#04243d] focus:border-[#04243d]
               "
-              placeholder="株式会社D"
+              placeholder="株式会社ABC"
             />
           </div>
           <button
