@@ -234,7 +234,7 @@ function VisitorApp() {
             }}
             className={`
               w-full p-6 sm:p-8 text-center border-2 rounded-xl
-              hover:border-[#ea5519] hover:bg-[#ea5519]/20
+              hover:border-[#04243d] hover:bg-[#04243d]/20
               transition-all duration-500 transform hover-lift ripple
               flex flex-col items-center group animate-scale-in
             `}
@@ -340,7 +340,7 @@ function VisitorApp() {
             }}
             disabled={!visitorInfo.name}
             className="
-              w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white
+              w-full bg-gradient-to-r from-[#ea5519] to-blue-600 text-white
               py-4 sm:py-5 px-6 sm:px-8 rounded-xl text-xl sm:text-2xl font-bold
               hover:from-[#ea5519] hover:to-[#ea5519]
               disabled:from-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed
