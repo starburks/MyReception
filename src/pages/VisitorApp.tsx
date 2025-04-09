@@ -70,8 +70,9 @@ function VisitorApp() {
       const { data, error } = await supabase
         .from('companies')
         .select('*')
-        .order('name');
-      
+        .order('order_number', { ascending: true })
+        .order('name', { ascending: true });
+  
       if (error) {
         console.error('Error fetching companies:', error);
         await supabase.from('error_logs').insert([{
@@ -81,7 +82,7 @@ function VisitorApp() {
         toast.error('会社情報の取得に失敗しました');
         return;
       }
-
+  
       setCompanies(data || []);
     } catch (error) {
       console.error('Unexpected error:', error);
@@ -93,7 +94,7 @@ function VisitorApp() {
     } finally {
       setIsCompanyLoading(false);
     }
-  };
+  };  
 
   const fetchStaffMembers = async (companyId: string) => {
     setIsLoading(true);
