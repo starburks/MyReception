@@ -34,6 +34,11 @@ const CompanyManagement: React.FC = () => {
   };
 
   const sortedCompanies = [...companies].sort((a, b) => {
+    const aOrder = a.order_number ?? Number.MAX_SAFE_INTEGER;
+    const bOrder = b.order_number ?? Number.MAX_SAFE_INTEGER;
+
+    if (aOrder !== bOrder) return aOrder - bOrder;
+
     const aVal = a[sortKey];
     const bVal = b[sortKey];
     if (aVal < bVal) return sortOrder === 'asc' ? -1 : 1;
@@ -49,27 +54,28 @@ const CompanyManagement: React.FC = () => {
     }
 
     const toastId = toast.loading('保存中...');
+    const dataToSave = {
+      name: editingCompany.name,
+      chatwork_room_id: editingCompany.chatwork_room_id,
+      order_number: editingCompany.order_number ?? null,
+    };
+
     try {
       if (editingCompany.id) {
         const { error } = await supabase
           .from('companies')
-          .update({
-            name: editingCompany.name,
-            chatwork_room_id: editingCompany.chatwork_room_id
-          })
+          .update(dataToSave)
           .eq('id', editingCompany.id);
         if (error) throw error;
         toast.success('会社情報を更新しました', { id: toastId });
       } else {
         const { error } = await supabase
           .from('companies')
-          .insert([{
-            name: editingCompany.name,
-            chatwork_room_id: editingCompany.chatwork_room_id
-          }]);
+          .insert([dataToSave]);
         if (error) throw error;
         toast.success('会社を登録しました', { id: toastId });
       }
+
       setIsEditing(false);
       setEditingCompany({});
       fetchCompanies();
@@ -91,11 +97,12 @@ const CompanyManagement: React.FC = () => {
   };
 
   const exportToCsv = () => {
-    const headers = ['会社名', 'Chatwork Room ID', '作成日'];
+    const headers = ['会社名', 'Chatwork Room ID', '作成日', '表示順'];
     const csvData = companies.map(company => [
       company.name,
       company.chatwork_room_id || '',
-      new Date(company.created_at).toLocaleString('ja-JP')
+      new Date(company.created_at).toLocaleString('ja-JP'),
+      company.order_number ?? ''
     ]);
 
     const csv = [headers, ...csvData]
@@ -146,6 +153,15 @@ const CompanyManagement: React.FC = () => {
                   type="text"
                   value={editingCompany.chatwork_room_id || ''}
                   onChange={(e) => setEditingCompany({ ...editingCompany, chatwork_room_id: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-md"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">表示順（小さいほど上に表示）</label>
+                <input
+                  type="number"
+                  value={editingCompany.order_number ?? ''}
+                  onChange={(e) => setEditingCompany({ ...editingCompany, order_number: Number(e.target.value) })}
                   className="w-full px-3 py-2 border rounded-md"
                 />
               </div>
