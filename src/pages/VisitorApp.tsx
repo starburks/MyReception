@@ -415,6 +415,10 @@ function VisitorApp() {
     // 五十音の行を判定する関数
   const getGojūonGroup = (name: string): string => {
     const char = name[0];
+    
+    // 清音・濁音・半濁音も対応できるように、正規化処理も入れておくとベター
+    const baseChar = char.normalize('NFD').charAt(0);
+    
     const groups: { [key: string]: string } = {
       あ: 'あ行', い: 'あ行', う: 'あ行', え: 'あ行', お: 'あ行',
       か: 'か行', き: 'か行', く: 'か行', け: 'か行', こ: 'か行',
