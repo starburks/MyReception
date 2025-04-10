@@ -412,76 +412,100 @@ function VisitorApp() {
     </div>
   );
   
-  const renderStaffSelection = () => (
-    <div className="w-full max-w-2xl mx-auto animate-slide-in">
-      {renderBackButton(() => setStep('company'))}
-      <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-xl glass-effect">
-        {/* text-gray-800 → text-[#04243d] */}
-        <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-[#04243d]">
-          担当者選択
-        </h2>
+  const GojūonStaffSelector = ({ staffMembers, onSelect }: {
+    staffMembers: StaffMember[];
+    onSelect: (id: string) => void;
+  }) => {
+    const [currentKana, setCurrentKana] = useState('あ');
+    const kanaRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   
-        <div className="grid grid-cols-1 gap-4 sm:gap-6">
-          {isLoading ? (
-            <div className="text-center text-gray-500 py-6 sm:py-8 text-lg sm:text-xl">
-              読み込み中...
-            </div>
-          ) : staffMembers.length === 0 ? (
-            <div className="text-center text-gray-500 py-6 sm:py-8 text-lg sm:text-xl">
-              担当者が登録されていません
-            </div>
-          ) : (
-            staffMembers.map((staff, index) => (
-              <button
-                key={staff.id}
-                onClick={() => handleStaffSelect(staff.id)}
-                disabled={isLoading}
-                className={`
-                  w-full p-4 sm:p-6 text-left border-2 rounded-xl
-                  hover:border-[#ea5519] hover:bg-[#ea5519]/20
-                  transition-all duration-500 transform hover-lift ripple
-                  flex items-center group animate-scale-in
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                `}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div
-                  className="
-                    bg-gray-100 rounded-full p-2 sm:p-3 
-                    group-hover:bg-[#ea5519]/20
-                    transition-colors duration-300
-                  "
-                >
-                  {staff.photo_url ? (
-                    <img
-                      src={staff.photo_url}
-                      alt={staff.name}
-                      className="w-8 h-8 sm:w-12 sm:h-12 rounded-full object-cover"
-                    />
-                  ) : (
-                    /* text-gray-600 → text-[#04243d], group-hover:text-blue-600 → group-hover:text-[#ea5519] */
-                    <UserCircle className="w-8 h-8 sm:w-12 sm:h-12 text-[#04243d] group-hover:text-[#ea5519] transition-colors duration-300" />
-                  )}
+    const getKanaGroup = (name: string): string => {
+      const firstChar = name[0];
+      if (/[あ-お]/.test(firstChar)) return 'あ';
+      if (/[か-こ]/.test(firstChar)) return 'か';
+      if (/[さ-そ]/.test(firstChar)) return 'さ';
+      if (/[た-と]/.test(firstChar)) return 'た';
+      if (/[な-の]/.test(firstChar)) return 'な';
+      if (/[は-ほ]/.test(firstChar)) return 'は';
+      if (/[ま-も]/.test(firstChar)) return 'ま';
+      if (/[や-よ]/.test(firstChar)) return 'や';
+      if (/[ら-ろ]/.test(firstChar)) return 'ら';
+      if (/[わ-ん]/.test(firstChar)) return 'わ';
+      return '#';
+    };
+  
+    const grouped = staffMembers.reduce((acc, staff) => {
+      const kana = getKanaGroup(staff.name);
+      if (!acc[kana]) acc[kana] = [];
+      acc[kana].push(staff);
+      return acc;
+    }, {} as { [key: string]: StaffMember[] });
+  
+    const kanaOrder = ['あ', 'か', 'さ', 'た', 'な', 'は', 'ま', 'や', 'ら', 'わ'];
+  
+    useEffect(() => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const kana = entry.target.getAttribute('data-kana');
+            if (kana) setCurrentKana(kana);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '-40% 0px -40% 0px'
+      });
+  
+      kanaOrder.forEach(kana => {
+        const el = kanaRefs.current[kana];
+        if (el) observer.observe(el);
+      });
+  
+      return () => observer.disconnect();
+    }, [staffMembers]);
+  
+    return (
+      <div className="relative">
+        <div className="fixed top-16 left-4 text-2xl font-bold text-orange-600 z-20">
+          {currentKana}
+        </div>
+        <div className="overflow-y-auto max-h-[70vh] space-y-6 pr-2">
+          {kanaOrder.map(kana => (
+            grouped[kana] ? (
+              <div key={kana} ref={el => kanaRefs.current[kana] = el} data-kana={kana}>
+                <div className="sticky top-0 bg-white px-2 py-1 text-lg font-bold border-b border-gray-300 z-10">
+                  {kana}
                 </div>
-                <div className="ml-4 sm:ml-6">
-                  {/* group-hover:text-blue-700 → group-hover:text-[#ea5519] */}
-                  <div className="text-xl sm:text-2xl font-medium group-hover:text-[#ea5519] transition-colors duration-300">
-                    {staff.name}
-                  </div>
-                  {staff.department && (
-                    /* group-hover:text-blue-600 → group-hover:text-[#ea5519] */
-                    <div className="text-sm sm:text-base text-gray-500 group-hover:text-[#ea5519] transition-colors duration-300">
-                      {staff.department}
-                    </div>
-                  )}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 p-2">
+                  {grouped[kana].map(staff => (
+                    <button
+                      key={staff.id}
+                      onClick={() => onSelect(staff.id)}
+                      className="border p-3 rounded-xl hover:bg-orange-50 flex flex-col items-start text-left"
+                    >
+                      {staff.photo_url ? (
+                        <img
+                          src={staff.photo_url}
+                          alt={staff.name}
+                          className="w-12 h-12 rounded-full object-cover mb-2"
+                        />
+                      ) : (
+                        <UserCircle className="w-12 h-12 text-gray-400 mb-2" />
+                      )}
+                      <div className="font-semibold text-sm">{staff.name}</div>
+                      {staff.department && (
+                        <div className="text-xs text-gray-500">{staff.department}</div>
+                      )}
+                    </button>
+                  ))}
                 </div>
-              </button>
-            ))
-          )}
+              </div>
+            ) : null
+          ))}
         </div>
       </div>
-    </div>
-  );
+    );
+  };
   
   const renderComplete = () => (
     <div className="w-full max-w-2xl mx-auto animate-slide-in">
