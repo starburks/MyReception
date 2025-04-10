@@ -412,28 +412,7 @@ function VisitorApp() {
     </div>
   );
   
-    // 五十音の行を判定する関数
-  const getGojūonGroup = (name: string): string => {
-    const char = name[0];
-    
-    // 清音・濁音・半濁音も対応できるように、正規化処理も入れておくとベター
-    const baseChar = char.normalize('NFD').charAt(0);
-    
-    const groups: { [key: string]: string } = {
-      あ: 'あ行', い: 'あ行', う: 'あ行', え: 'あ行', お: 'あ行',
-      か: 'か行', き: 'か行', く: 'か行', け: 'か行', こ: 'か行',
-      さ: 'さ行', し: 'さ行', す: 'さ行', せ: 'さ行', そ: 'さ行',
-      た: 'た行', ち: 'た行', つ: 'た行', て: 'た行', と: 'た行',
-      な: 'な行', に: 'な行', ぬ: 'な行', ね: 'な行', の: 'な行',
-      は: 'は行', ひ: 'は行', ふ: 'は行', へ: 'は行', ほ: 'は行',
-      ま: 'ま行', み: 'ま行', む: 'ま行', め: 'ま行', も: 'ま行',
-      や: 'や行', ゆ: 'や行', よ: 'や行',
-      ら: 'ら行', り: 'ら行', る: 'ら行', れ: 'ら行', ろ: 'ら行',
-      わ: 'わ行', を: 'わ行', ん: 'わ行',
-    };
-    return groups[char] || 'その他';
   
-
   const renderStaffSelection = () => {
     // 五十音順に並び替え（ロケール考慮）
     const sortedStaff = [...staffMembers].sort((a, b) =>
@@ -504,7 +483,6 @@ function VisitorApp() {
         </div>
       </div>
     );
-  };
   };  
   
   const renderComplete = () => (
