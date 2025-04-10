@@ -435,10 +435,22 @@ function VisitorApp() {
   };
 
   const renderStaffSelection = () => {
-    // 五十音順に並び替え（ロケール考慮）
-    const sortedStaff = [...staffMembers].sort((a, b) =>
-      a.name.localeCompare(b.name, 'ja-JP')
-    );
+    // スタッフを五十音グループで分類
+    const groupedStaff: { [key: string]: StaffMember[] } = {};
+  
+    staffMembers.forEach((staff) => {
+      const group = getGojūonGroup(staff.name);
+      if (!groupedStaff[group]) {
+        groupedStaff[group] = [];
+      }
+      groupedStaff[group].push(staff);
+    });
+  
+    // 各グループをソート
+    const groupOrder = [
+      'あ行', 'か行', 'さ行', 'た行', 'な行',
+      'は行', 'ま行', 'や行', 'ら行', 'わ行', 'その他'
+    ];
   
     return (
       <div className="w-full max-w-2xl mx-auto animate-slide-in">
@@ -448,57 +460,56 @@ function VisitorApp() {
             担当者選択
           </h2>
   
-          <div className="grid grid-cols-1 gap-4 sm:gap-6">
+          <div className="space-y-6">
             {isLoading ? (
               <div className="text-center text-gray-500 py-6 sm:py-8 text-lg sm:text-xl">
                 読み込み中...
               </div>
-            ) : sortedStaff.length === 0 ? (
-              <div className="text-center text-gray-500 py-6 sm:py-8 text-lg sm:text-xl">
-                担当者が登録されていません
-              </div>
             ) : (
-              sortedStaff.map((staff, index) => (
-                <button
-                  key={staff.id}
-                  onClick={() => handleStaffSelect(staff.id)}
-                  disabled={isLoading}
-                  className={`
-                    w-full p-4 sm:p-6 text-left border-2 rounded-xl
-                    hover:border-[#ea5519] hover:bg-[#ea5519]/20
-                    transition-all duration-500 transform hover-lift ripple
-                    flex items-center group animate-scale-in
-                    disabled:opacity-50 disabled:cursor-not-allowed
-                  `}
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <div className="
-                    bg-gray-100 rounded-full p-2 sm:p-3 
-                    group-hover:bg-[#ea5519]/20
-                    transition-colors duration-300
-                  ">
-                    {staff.photo_url ? (
-                      <img
-                        src={staff.photo_url}
-                        alt={staff.name}
-                        className="w-8 h-8 sm:w-12 sm:h-12 rounded-full object-cover"
-                      />
-                    ) : (
-                      <UserCircle className="w-8 h-8 sm:w-12 sm:h-12 text-[#04243d] group-hover:text-[#ea5519] transition-colors duration-300" />
-                    )}
-                  </div>
-                  <div className="ml-4 sm:ml-6">
-                    <div className="text-xl sm:text-2xl font-medium group-hover:text-[#ea5519] transition-colors duration-300">
-                      {staff.name}
+              groupOrder.map((group) =>
+                groupedStaff[group] ? (
+                  <div key={group}>
+                    <div className="text-lg sm:text-xl font-bold text-[#04243d] border-b border-gray-300 pb-1 mb-2 sticky top-0 bg-white z-10">
+                      {group}
                     </div>
-                    {staff.department && (
-                      <div className="text-sm sm:text-base text-gray-500 group-hover:text-[#ea5519] transition-colors duration-300">
-                        {staff.department}
-                      </div>
-                    )}
+                    <div className="space-y-4">
+                      {groupedStaff[group]
+                        .sort((a, b) => a.name.localeCompare(b.name, 'ja-JP'))
+                        .map((staff, index) => (
+                          <button
+                            key={staff.id}
+                            onClick={() => handleStaffSelect(staff.id)}
+                            disabled={isLoading}
+                            className="w-full p-4 sm:p-6 text-left border-2 rounded-xl hover:border-[#ea5519] hover:bg-[#ea5519]/20 transition-all duration-500 transform hover-lift ripple flex items-center group animate-scale-in disabled:opacity-50 disabled:cursor-not-allowed"
+                            style={{ animationDelay: `${index * 0.05}s` }}
+                          >
+                            <div className="bg-gray-100 rounded-full p-2 sm:p-3 group-hover:bg-[#ea5519]/20 transition-colors duration-300">
+                              {staff.photo_url ? (
+                                <img
+                                  src={staff.photo_url}
+                                  alt={staff.name}
+                                  className="w-8 h-8 sm:w-12 sm:h-12 rounded-full object-cover"
+                                />
+                              ) : (
+                                <UserCircle className="w-8 h-8 sm:w-12 sm:h-12 text-[#04243d] group-hover:text-[#ea5519] transition-colors duration-300" />
+                              )}
+                            </div>
+                            <div className="ml-4 sm:ml-6">
+                              <div className="text-xl sm:text-2xl font-medium group-hover:text-[#ea5519] transition-colors duration-300">
+                                {staff.name}
+                              </div>
+                              {staff.department && (
+                                <div className="text-sm sm:text-base text-gray-500 group-hover:text-[#ea5519] transition-colors duration-300">
+                                  {staff.department}
+                                </div>
+                              )}
+                            </div>
+                          </button>
+                        ))}
+                    </div>
                   </div>
-                </button>
-              ))
+                ) : null
+              )
             )}
           </div>
         </div>
