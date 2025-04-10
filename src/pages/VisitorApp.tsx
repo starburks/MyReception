@@ -412,76 +412,77 @@ function VisitorApp() {
     </div>
   );
   
-  const renderStaffSelection = () => (
-    <div className="w-full max-w-2xl mx-auto animate-slide-in">
-      {renderBackButton(() => setStep('company'))}
-      <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-xl glass-effect">
-        {/* text-gray-800 → text-[#04243d] */}
-        <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-[#04243d]">
-          担当者選択
-        </h2>
+  const renderStaffSelection = () => {
+    // 五十音順に並び替え（ロケール考慮）
+    const sortedStaff = [...staffMembers].sort((a, b) =>
+      a.name.localeCompare(b.name, 'ja-JP')
+    );
   
-        <div className="grid grid-cols-1 gap-4 sm:gap-6">
-          {isLoading ? (
-            <div className="text-center text-gray-500 py-6 sm:py-8 text-lg sm:text-xl">
-              読み込み中...
-            </div>
-          ) : staffMembers.length === 0 ? (
-            <div className="text-center text-gray-500 py-6 sm:py-8 text-lg sm:text-xl">
-              担当者が登録されていません
-            </div>
-          ) : (
-            staffMembers.map((staff, index) => (
-              <button
-                key={staff.id}
-                onClick={() => handleStaffSelect(staff.id)}
-                disabled={isLoading}
-                className={`
-                  w-full p-4 sm:p-6 text-left border-2 rounded-xl
-                  hover:border-[#ea5519] hover:bg-[#ea5519]/20
-                  transition-all duration-500 transform hover-lift ripple
-                  flex items-center group animate-scale-in
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                `}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div
-                  className="
+    return (
+      <div className="w-full max-w-2xl mx-auto animate-slide-in">
+        {renderBackButton(() => setStep('company'))}
+        <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-xl glass-effect">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-[#04243d]">
+            担当者選択
+          </h2>
+  
+          <div className="grid grid-cols-1 gap-4 sm:gap-6">
+            {isLoading ? (
+              <div className="text-center text-gray-500 py-6 sm:py-8 text-lg sm:text-xl">
+                読み込み中...
+              </div>
+            ) : sortedStaff.length === 0 ? (
+              <div className="text-center text-gray-500 py-6 sm:py-8 text-lg sm:text-xl">
+                担当者が登録されていません
+              </div>
+            ) : (
+              sortedStaff.map((staff, index) => (
+                <button
+                  key={staff.id}
+                  onClick={() => handleStaffSelect(staff.id)}
+                  disabled={isLoading}
+                  className={`
+                    w-full p-4 sm:p-6 text-left border-2 rounded-xl
+                    hover:border-[#ea5519] hover:bg-[#ea5519]/20
+                    transition-all duration-500 transform hover-lift ripple
+                    flex items-center group animate-scale-in
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                  `}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div className="
                     bg-gray-100 rounded-full p-2 sm:p-3 
                     group-hover:bg-[#ea5519]/20
                     transition-colors duration-300
-                  "
-                >
-                  {staff.photo_url ? (
-                    <img
-                      src={staff.photo_url}
-                      alt={staff.name}
-                      className="w-8 h-8 sm:w-12 sm:h-12 rounded-full object-cover"
-                    />
-                  ) : (
-                    /* text-gray-600 → text-[#04243d], group-hover:text-blue-600 → group-hover:text-[#ea5519] */
-                    <UserCircle className="w-8 h-8 sm:w-12 sm:h-12 text-[#04243d] group-hover:text-[#ea5519] transition-colors duration-300" />
-                  )}
-                </div>
-                <div className="ml-4 sm:ml-6">
-                  {/* group-hover:text-blue-700 → group-hover:text-[#ea5519] */}
-                  <div className="text-xl sm:text-2xl font-medium group-hover:text-[#ea5519] transition-colors duration-300">
-                    {staff.name}
+                  ">
+                    {staff.photo_url ? (
+                      <img
+                        src={staff.photo_url}
+                        alt={staff.name}
+                        className="w-8 h-8 sm:w-12 sm:h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <UserCircle className="w-8 h-8 sm:w-12 sm:h-12 text-[#04243d] group-hover:text-[#ea5519] transition-colors duration-300" />
+                    )}
                   </div>
-                  {staff.department && (
-                    /* group-hover:text-blue-600 → group-hover:text-[#ea5519] */
-                    <div className="text-sm sm:text-base text-gray-500 group-hover:text-[#ea5519] transition-colors duration-300">
-                      {staff.department}
+                  <div className="ml-4 sm:ml-6">
+                    <div className="text-xl sm:text-2xl font-medium group-hover:text-[#ea5519] transition-colors duration-300">
+                      {staff.name}
                     </div>
-                  )}
-                </div>
-              </button>
-            ))
-          )}
+                    {staff.department && (
+                      <div className="text-sm sm:text-base text-gray-500 group-hover:text-[#ea5519] transition-colors duration-300">
+                        {staff.department}
+                      </div>
+                    )}
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };  
   
   const renderComplete = () => (
     <div className="w-full max-w-2xl mx-auto animate-slide-in">
